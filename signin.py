@@ -1,14 +1,14 @@
 from kivy.app import App 
 from kivy.uix.boxlayout import BoxLayout
 
-class SignInWindow(BoxLayout):
+class SigninWindow(BoxLayout):
     pass
 
 
-class SignInApp(App):
+class SigninApp(App):
     def build(self):
-        return SignInWindow()
+        return SigninWindow()
     
 if __name__ == "__main__":
-    sa = SignInApp()
+    sa = SigninApp()
     sa.run()
