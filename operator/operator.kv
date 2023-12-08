@@ -139,7 +139,7 @@
                             pos: self.pos
                     Label:
                         text: 'Code'
-                        size_hint_x: .3
+                        size_hint_x: .2
                     Label:
                         text: 'Product Name'
                         size_hint_x: .3
@@ -154,7 +154,7 @@
                         size_hint_x: .1
                     Label:
                         text: 'Product Total'
-                        size_hint_x: .1
+                        size_hint_x: .2
 
                 GridLayout:
                     id: products 
@@ -169,3 +169,16 @@
                 id: receipt_preview
                 readonly: True
                 text: 'The Collector\n123 Main St\nNoWhere, Space\n\nTel: (246) 123-3456\nReceipt No: \nDate: \n\n'
+
+    BoxLayout:
+        id: footer
+        size_hint_y: None
+        height: 30
+        canvas.before:
+            Color: 
+                rgba: (.06, .47, .47, 1)
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        Label:
+            text: 'maintained by Alpha Software'
