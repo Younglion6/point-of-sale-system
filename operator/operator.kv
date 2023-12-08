@@ -100,13 +100,15 @@
             BoxLayout:
                 id: product_inputs
                 size_hint_y: None
-                height: 30
+                height: 45
                 TextInput:
                     id: qty_inp
                     size_hint_x: .1
                 TextInput:
                     id: code_inp
                     size_hint_x: .3
+                    multiline: False
+                    on_text_validate: root.update_purchases()
                 TextInput:
                     id: disc_inp
                     size_hint_x: .1
@@ -154,10 +156,16 @@
                         text: 'Product Total'
                         size_hint_x: .1
 
-            BoxLayout:
-                id: products 
+                GridLayout:
+                    id: products 
+                    cols: 1
 
         BoxLayout:
             id: preview
             orientation: 'vertical'
             size_hint_x: .2 
+
+            TextInput:
+                id: receipt_preview
+                readonly: True
+                text: 'The Collector\n123 Main St\nNoWhere, Space\n\nTel: (246) 123-3456\nReceipt No: \nDate: \n\n'
