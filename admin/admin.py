@@ -3,6 +3,7 @@ from kivy.uix.boxlayout import BoxLayout
 
 from collections import OrderedDict
 from pymongo import MongoClient
+from utils.datatable import DataTable
 
 class AdminWindow(BoxLayout):
     def __init__(self, **kwargs):
@@ -14,19 +15,30 @@ class AdminWindow(BoxLayout):
     #     'TH2':{0:'Stmp0',1:'Sampled1.0',2:'Sampled2.0',3:'Sampled4.0'},
     #     'TH3':{0:'Stmpl0',1:'Sample1',2:'Sample2',3:'Sample4'},
     #     'TH4':{0:'Stmple0',1:'Sample1',2:'Sample2',3:'Sample4'},
-        print(self.get_products())
+        # print(self.get_products())
     # }
+        content = self.ids.scrn_content
+        users = self.get_users()
+        userstable = DataTable(table=users)
+        content.add_widget(userstable)
+
+        #Display Products
+        product_scrn = self.ids.scrn_product_content
+        products = self.get_products()
+        prod_table = DataTable(table=products)
+        product_scrn.add_widget(prod_table)
+
+
     def get_users(self):
         client = MongoClient()
         db = client.silverpos
         users = db.users
-        _users = OrderedDict(
-            first_names = {},
-            last_names = {},
-            user_names = {},
-            passwords = {},
-            designations = {}
-        )
+        _users = OrderedDict()
+        _users['first_names'] = {}
+        _users['last_names'] = {}
+        _users['user_names'] = {}
+        _users['passwords'] = {}
+        _users['designations'] = {}
         first_names = []
         last_names = []
         user_names = []
@@ -36,7 +48,10 @@ class AdminWindow(BoxLayout):
             first_names.append(user['first_name'])
             last_names.append(user['last_name'])
             user_names.append(user['user_name'])
-            passwords.append(user['password'])
+            pwd = user['password']
+            if len(pwd) > 10:
+                pwd = pwd[:10] + '...'
+            passwords.append(pwd)
             designations.append(user['designation'])
         # print(designations)
         users_length = len(first_names)
@@ -75,7 +90,10 @@ class AdminWindow(BoxLayout):
 
         for product in products.find():
             product_code.append(product['product_code'])
-            product_name.append(product['product_name'])
+            name = product['product_name']
+            if len(name) > 10:
+                name = name[:10] + '...'
+            product_name.append(name)
             product_weight.append(product['product_weight'])
             in_stock.append(product['in_stock'])
             sold.append(product['sold'])
@@ -98,7 +116,13 @@ class AdminWindow(BoxLayout):
         
         return _stocks
         
-
+    def change_screen(self, instance):
+        if instance.text == 'Manage Products':
+            self.ids.scrn_mngr.current = 'scrn_product_content'
+        elif instance.text == 'Manage Users':
+            self.ids.scrn_mngr.current = 'scrn_content'
+        else:
+            self.ids.scrn_mngr.current = 'scrn_analysis'
 
 
 class AdminApp(App):
